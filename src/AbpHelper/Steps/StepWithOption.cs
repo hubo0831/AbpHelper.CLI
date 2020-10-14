@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
 using EasyAbp.AbpHelper.Commands;
+
 using Elsa.Expressions;
 using Elsa.Scripting.JavaScript;
 
@@ -147,6 +149,10 @@ namespace EasyAbp.AbpHelper.Steps
             }
 
             return list;
+        }
+        public WorkflowExpression<CommandOptionsBase> GetOption()
+        {
+            return GetState(() => new JavaScriptExpression<CommandOptionsBase>(OptionVariableName));
         }
     }
 }

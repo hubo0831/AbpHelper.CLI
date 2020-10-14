@@ -2,7 +2,7 @@
 
 namespace EasyAbp.AbpHelper.Commands.Generate.Crud
 {
-    public class CrudCommandOption : GenerateCommandOption
+    public class CrudCommandOption : GenerateCommandOption, ITemplateTypeHost, IModuleDirHost
     {
         private const string MigrationProjectNameDescription = @"Specify the name of the migration project.
 For ABP applications, the default value is '*.EntityFrameworkCore.DbMigrations.csproj';
@@ -42,5 +42,11 @@ This argument takes effect only if '--skip-db-migrations' is NOT specified.";
 
         [Option("skip-entity-constructors", Description = "Skip generating constructors for the entity")]
         public bool SkipEntityConstructors { get; set; }
+
+        [Option('t', "template-type", Description = "模版类型")]
+        public string TemplateType { get; set; } = null!;
+
+        [Option("module-dir", Description = "模块目录")]
+        public string ModuleDir { get; set; } = null!;
     }
 }

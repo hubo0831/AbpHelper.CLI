@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AbpHelper": {
+      "commandName": "Project",
+      "commandLineArgs": "generate crud \"TeleCommOperatorProduct\" -d \"D:\\My Documents\\Projects\\Moral\" -t Module --module-dir \"D:\\My Documents\\Projects\\Moral\\src\\Modules\\IoT\\Common\" --separate-dto --skip-custom-repository --skip-db-migrations --skip-ui --skip-view-model --skip-test --no-overwrite"
+    }
+  }
+}

@@ -1,4 +1,5 @@
-﻿using System.CommandLine.Builder;
+﻿using System;
+using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
 using System.Threading.Tasks;
 using EasyAbp.AbpHelper.Commands;
@@ -38,6 +39,7 @@ namespace EasyAbp.AbpHelper
                     .Build();
 
                 await parser.InvokeAsync(args);
+                Console.Read();
             }
         }
     }

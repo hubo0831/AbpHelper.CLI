@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using EasyAbp.AbpHelper.Workflow;
+using EasyAbp.AbpHelper.Commands.Generate;
 
 namespace EasyAbp.AbpHelper.Steps.Abp
 {
@@ -17,9 +18,17 @@ namespace EasyAbp.AbpHelper.Steps.Abp
             LogInput(() => baseDirectory);
             var excludeDirectories = await context.EvaluateAsync(ExcludeDirectories, cancellationToken);
             LogInput(() => excludeDirectories, string.Join("; ", excludeDirectories));
+            var commandOption = await context.EvaluateAsync(GetOption(), cancellationToken);
+            string? templateTypeValue = null;
+            if (commandOption is ITemplateTypeHost templateTypeHost) templateTypeValue = templateTypeHost.TemplateType;
+            LogInput(() => templateTypeValue);
 
             TemplateType templateType;
-            if (FileExistsInDirectory(baseDirectory, "*.DbMigrator.csproj", excludeDirectories))
+            if (!templateTypeValue.IsNullOrEmpty())
+            {
+                templateType = templateTypeValue.ToEnum<TemplateType>();
+            }
+            else if (FileExistsInDirectory(baseDirectory, "*.DbMigrator.csproj", excludeDirectories))
             {
                 templateType = TemplateType.Application;
             }
@@ -34,7 +43,10 @@ namespace EasyAbp.AbpHelper.Steps.Abp
 
 
             // Assume the domain project must be existed for an ABP project
-            var domainCsprojFile = SearchFileInDirectory(baseDirectory, "*.Domain.csproj", excludeDirectories);
+            var moduleDir = baseDirectory;
+            if (commandOption is IModuleDirHost moduleDirHost) moduleDir = moduleDirHost.ModuleDir;
+
+            var domainCsprojFile = SearchFileInDirectory(moduleDir, "*.Domain.csproj", excludeDirectories);
             if (domainCsprojFile == null) throw new NotSupportedException($"Cannot find the domain project file. Make sure it is a valid ABP project. Directory: {baseDirectory}");
 
             var fileName = Path.GetFileName(domainCsprojFile);
