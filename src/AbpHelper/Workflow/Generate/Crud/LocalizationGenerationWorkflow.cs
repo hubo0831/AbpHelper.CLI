@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿//using System.Collections.Generic;
+using System.Collections;
+
 using EasyAbp.AbpHelper.Steps.Abp;
 using EasyAbp.AbpHelper.Steps.Common;
 using Elsa;
@@ -26,7 +28,7 @@ namespace EasyAbp.AbpHelper.Workflow.Generate.Crud
                         }
                     )
                     .Then<ForEach>(
-                        x => { x.CollectionExpression = new JavaScriptExpression<IList<object>>(MultiFileFinderStep.DefaultFileParameterName); },
+                        x => { x.CollectionExpression = new JavaScriptExpression<IList>(MultiFileFinderStep.DefaultFileParameterName); },
                         branch =>
                             branch.When(OutcomeNames.Iterate)
                                 .Then<LocalizationJsonModificationCreatorStep>(
